@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, exc
 import psycopg2
-from helpers import get_db_connection_str
+from helpers import get_db_connection_str, infer_column_types
 
 
 def create_db_engine():
@@ -16,11 +16,15 @@ def create_db_engine():
 def create_tables(engine):
     metadata = MetaData()
 
-    test_table = Table(
-        'test_table', metadata,
-        Column('id', Integer, primary_key=True),
-        Column('value', String(255)),
-    )
+    # Start with the primary key column
+    columns = [Column('id', Integer, primary_key=True)]
+
+    column_types = infer_column_types("data/steel-plants.csv")
+    columns.extend([Column(header, col_type)
+                   for header, col_type in column_types.items()])
+
+    # Create the table with the dynamic columns
+    table = Table('plants_table', metadata, *columns)
 
     try:
         metadata.create_all(engine)
