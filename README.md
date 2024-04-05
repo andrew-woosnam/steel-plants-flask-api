@@ -27,3 +27,7 @@ This project is a Flask-powered API that provides access to a SQL database of gl
    - You can confirm the services are running with `docker compose ps`.
    - You can access the PostgreSQL database with `docker exec -it <container_name> psql -U <POSTGRES_USER> -d <POSTGRES_DB>`.
 3. When finished, shut down with `docker compose down`.
+
+## Tests
+
+Unit tests can be run with `docker compose --profile test up` (this will spin up new containers).

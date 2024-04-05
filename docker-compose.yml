@@ -13,5 +13,15 @@ services:
     depends_on:
       - db
 
+  test:
+    build:
+      dockerfile: Dockerfile.test
+    depends_on:
+      - app
+    env_file:
+      - .env
+    command: pytest tests/
+    profiles: [test]
+
 volumes:
   pgdata:
