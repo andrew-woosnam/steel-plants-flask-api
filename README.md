@@ -18,7 +18,7 @@ This project is a Flask-powered API that provides access to a SQL database of gl
    POSTGRES_DB=<your_db_name>
    ```
 
-3. **Save the .env file**. These variables will be used to configure the postgreSQL database when the container is created.
+3. **Save the .env file**. These variables will be used to configure & connect to the postgreSQL database.
 
 ## Usage
 
