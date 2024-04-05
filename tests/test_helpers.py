@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch, mock_open
 from sqlalchemy import Integer, String
-from app.helpers import get_db_connection_str, infer_column_types
+from app.helpers import format_as_column_name, get_db_connection_str, infer_column_types
 
 
 class TestHelpers(unittest.TestCase):
@@ -26,16 +26,16 @@ class TestHelpers(unittest.TestCase):
 
 class TestInferColumnTypes(unittest.TestCase):
     @patch('builtins.open', new_callable=mock_open, read_data=(
-        "Country,Total Plants,electric,\"electric, oxygen\"\n"
+        "Country,Total Plants,Electric,\"Electric, oxygen\"\n"
         "Albania,1,0,0\n"
         "Algeria,4,1,0\n"
         "Angola,1,1,0"))
     def test_infer_column_types(self, mock_file):
         expected = {
-            'Country': String(255),
-            'Total Plants': Integer(),
+            'country': String(255),
+            'total_plants': Integer(),
             'electric': Integer(),
-            'electric, oxygen': Integer()
+            'electric_oxygen': Integer()
         }
         result = infer_column_types('fake_file_path.csv')
 
@@ -43,6 +43,17 @@ class TestInferColumnTypes(unittest.TestCase):
         for column, column_type in expected.items():
             with self.subTest(column=column):
                 self.assertIsInstance(result[column], type(column_type))
+
+
+class TestFormatAsColumnName(unittest.TestCase):
+    def test_format_as_column_name(self):
+        self.assertEqual(format_as_column_name(
+            "Column Name! 123"), "column_name_123")
+        self.assertEqual(format_as_column_name("Another-Test"), "anothertest")
+        self.assertEqual(format_as_column_name("1234"), "1234")
+        self.assertEqual(format_as_column_name("with space"), "with_space")
+        self.assertEqual(format_as_column_name("UPPERCASE"), "uppercase")
+        self.assertEqual(format_as_column_name(""), "")
 
 
 if __name__ == '__main__':

@@ -19,14 +19,16 @@ def infer_column_types(csv_file):
 
         column_types = {}
         for header in headers:
-            column_types[header] = String(255)  # assume all strings
+            col_name = format_as_column_name(header)
+            column_types[col_name] = String(255)  # assume all strings
 
         first_row = next(reader)  # sample data from 1st row
         for i, value in enumerate(first_row):
+            col_name = format_as_column_name(headers[i])
             try:
                 # Try to convert to integer
                 int(value)
-                column_types[headers[i]] = Integer()
+                column_types[col_name] = Integer()
             except ValueError:
                 try:
                     # Try to convert to float
@@ -36,3 +38,10 @@ def infer_column_types(csv_file):
                     # keep as String
                     pass
         return column_types
+
+
+def format_as_column_name(str):
+    # Replace spaces with underscores, remove special characters, and convert to lowercase
+    formatted_str = ''.join('_' if c.isspace() else c.lower()
+                            for c in str if c.isalnum() or c.isspace())
+    return formatted_str
