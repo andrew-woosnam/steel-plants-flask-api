@@ -8,18 +8,22 @@ services:
     env_file:
       - .env
 
-  app:
+  flask-api:
     build: .
     depends_on:
       - db
     env_file:
       - .env
+    volumes:
+      - .:/code
+    ports:
+      - "5000:5000"
 
   test:
     build:
       dockerfile: Dockerfile.test
     depends_on:
-      - app
+      - flask-api
     env_file:
       - .env
     command: pytest tests/
