@@ -30,13 +30,8 @@ def infer_column_types(csv_file):
                 int(value)
                 column_types[col_name] = Integer()
             except ValueError:
-                try:
-                    # Try to convert to float
-                    float(value)
-                    column_types[headers[i]] = Float()
-                except ValueError:
-                    # keep as String
-                    pass
+                # keep as String
+                pass
         return column_types
 
 
