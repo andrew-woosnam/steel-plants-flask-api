@@ -5,8 +5,9 @@ services:
     image: postgres:latest
     env_file:
       - .env
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+    ## enable this volume mount to persist data between container instances
+    # volumes:
+    #   - pgdata:/var/lib/postgresql/data
 
   app:
     build: .
@@ -24,6 +25,5 @@ services:
       - .env
     command: pytest tests/
     profiles: [test]
-
-volumes:
-  pgdata:
+# volumes:
+#   pgdata:
