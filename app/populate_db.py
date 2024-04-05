@@ -1,1 +1,2 @@
-print("Hello World")
+def returns_true():
+    return True
