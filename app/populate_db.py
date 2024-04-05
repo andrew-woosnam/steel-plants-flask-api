@@ -1,16 +1,27 @@
 from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, exc
 import psycopg2
 from helpers import get_db_connection_str, infer_column_types
+from time import sleep
 
 
-def create_db_engine():
-    try:
-        engine = create_engine(
-            get_db_connection_str(),
-            echo=True)
-        return engine
-    except exc.SQLAlchemyError as err:
-        print(f"Error creating the database engine: {err}")
+def create_db_engine(retry_interval=5, max_retries=10):
+    retries = 0
+    while retries < max_retries:
+        try:
+            engine = create_engine(
+                get_db_connection_str(),
+                echo=True)
+            # Attempt to connect to the database to check if it's ready
+            with engine.connect() as conn:
+                print("Database is ready!")
+                return engine
+        except (exc.SQLAlchemyError, psycopg2.OperationalError) as err:
+            print("Database not ready, retrying in {} seconds ({}/{})...".format(
+                retry_interval, retries+1, max_retries))
+            retries += 1
+            sleep(retry_interval)
+    print("Error: Database did not become ready in time")
+    return None
 
 
 def create_tables(engine):
