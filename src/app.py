@@ -1,10 +1,7 @@
 from flask import Flask
 from src.config import Config
 from src.database import init_db
-from src.api.get_country_details import get_country_details
-from src.api.get_plant_type_counts import plant_counts
-from src.api.list_plant_types import list_plant_types
-from src.api.list_countries import list_countries
+from src.api.blueprints import api_blueprint
 
 
 def create_app():
@@ -12,15 +9,7 @@ def create_app():
     app.config.from_object(Config)
 
     init_db(app)
-
-    app.add_url_rule('/api/countries',
-                     view_func=list_countries, methods=['GET'])
-    app.add_url_rule('/api/countries/<country_name>',
-                     view_func=get_country_details, methods=['GET'])
-    app.add_url_rule(
-        '/api/plants', view_func=list_plant_types, methods=['GET'])
-    app.add_url_rule('/api/plants/<plant_type>',
-                     view_func=plant_counts, methods=['GET'])
+    app.register_blueprint(api_blueprint, url_prefix='/api')
 
     return app
 
