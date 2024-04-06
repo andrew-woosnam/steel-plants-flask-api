@@ -3,8 +3,8 @@ from database import db
 
 class Country(db.Model):
     __tablename__ = 'iron_steel_production'
-    country = db.Column(db.String(255), unique=True,
-                        nullable=False, primary_key=True)
+    name = db.Column('country', db.String(255), unique=True,
+                     nullable=False, primary_key=True)
     total_plants = db.Column(db.Integer)
     electric = db.Column(db.Integer)
     electric_oxygen = db.Column(db.Integer)
@@ -24,7 +24,7 @@ class Country(db.Model):
 
     def to_dict(self):
         return {
-            'country': self.country,
+            'name': self.name,
             'total_plants': self.total_plants,
             'electric': self.electric,
             'electric_oxygen': self.electric_oxygen,
