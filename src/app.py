@@ -1,17 +1,17 @@
 from flask import Flask
 from src.config import Config
+from src.database import init_db
 from src.api.get_country_details import get_country_details
 from src.api.get_plant_type_counts import plant_counts
 from src.api.list_plant_types import list_plant_types
 from src.api.list_countries import list_countries
-from src.database import db
 
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-    db.init_app(app)
+    init_db(app)
 
     app.add_url_rule('/api/countries',
                      view_func=list_countries, methods=['GET'])
