@@ -7,24 +7,32 @@ from src.api.list_countries import list_countries
 from src.helpers import get_db_connection_str
 from src.database import db
 
-app = Flask(__name__)
 
-POSTGRES_USER = os.getenv('POSTGRES_USER')
-POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD')
-POSTGRES_DB = os.getenv('POSTGRES_DB')
-POSTGRES_HOST = os.getenv('POSTGRES_HOST')
-POSTGRES_PORT = os.getenv('POSTGRES_PORT')
-app.config['SQLALCHEMY_DATABASE_URI'] = get_db_connection_str()
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+def create_app():
+    app = Flask(__name__)
 
-app.add_url_rule('/api/countries', view_func=list_countries, methods=['GET'])
-app.add_url_rule('/api/countries/<country_name>',
-                 view_func=get_country_details, methods=['GET'])
-app.add_url_rule('/api/plants', view_func=list_plant_types, methods=['GET'])
-app.add_url_rule('/api/plants/<plant_type>',
-                 view_func=plant_counts, methods=['GET'])
+    POSTGRES_USER = os.getenv('POSTGRES_USER')
+    POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD')
+    POSTGRES_DB = os.getenv('POSTGRES_DB')
+    POSTGRES_HOST = os.getenv('POSTGRES_HOST')
+    POSTGRES_PORT = os.getenv('POSTGRES_PORT')
+    app.config['SQLALCHEMY_DATABASE_URI'] = get_db_connection_str()
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-db.init_app(app)
+    db.init_app(app)
+
+    app.add_url_rule('/api/countries',
+                     view_func=list_countries, methods=['GET'])
+    app.add_url_rule('/api/countries/<country_name>',
+                     view_func=get_country_details, methods=['GET'])
+    app.add_url_rule(
+        '/api/plants', view_func=list_plant_types, methods=['GET'])
+    app.add_url_rule('/api/plants/<plant_type>',
+                     view_func=plant_counts, methods=['GET'])
+
+    return app
+
 
 if __name__ == '__main__':
+    app = create_app()
     app.run(host='0.0.0.0', port=5000)
