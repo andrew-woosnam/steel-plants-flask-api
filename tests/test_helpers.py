@@ -1,7 +1,6 @@
 import unittest
 from unittest.mock import patch
-
-from helpers import get_db_connection_str
+from src.helpers import get_db_connection_str
 
 
 class TestHelpers(unittest.TestCase):

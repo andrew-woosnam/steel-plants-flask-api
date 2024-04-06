@@ -1,5 +1,5 @@
 from flask import jsonify
-from models.country import Country
+from src.models.country import Country
 
 
 def list_plant_types():

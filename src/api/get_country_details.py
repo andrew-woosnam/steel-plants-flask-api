@@ -1,4 +1,4 @@
-from models.country import Country
+from src.models.country import Country
 
 
 def get_country_details(country_name):
