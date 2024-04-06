@@ -1,8 +1,5 @@
 from flask import Blueprint
-from src.api.list_countries import list_countries
-from src.api.get_country_details import get_country_details
-from src.api.list_plant_types import list_plant_types
-from src.api.get_plant_type_counts import plant_counts
+from src.api import list_countries, get_country_details, list_plant_types, plant_counts
 
 api_blueprint = Blueprint('api', __name__)
 
