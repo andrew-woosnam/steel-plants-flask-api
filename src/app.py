@@ -1,23 +1,15 @@
-import os
 from flask import Flask
+from src.config import Config
 from src.api.get_country_details import get_country_details
 from src.api.get_plant_type_counts import plant_counts
 from src.api.list_plant_types import list_plant_types
 from src.api.list_countries import list_countries
-from src.helpers import get_db_connection_str
 from src.database import db
 
 
 def create_app():
     app = Flask(__name__)
-
-    POSTGRES_USER = os.getenv('POSTGRES_USER')
-    POSTGRES_PASSWORD = os.getenv('POSTGRES_PASSWORD')
-    POSTGRES_DB = os.getenv('POSTGRES_DB')
-    POSTGRES_HOST = os.getenv('POSTGRES_HOST')
-    POSTGRES_PORT = os.getenv('POSTGRES_PORT')
-    app.config['SQLALCHEMY_DATABASE_URI'] = get_db_connection_str()
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config.from_object(Config)
 
     db.init_app(app)
 
