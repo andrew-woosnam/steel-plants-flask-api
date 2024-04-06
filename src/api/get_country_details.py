@@ -3,6 +3,7 @@ from src.models.country import Country
 
 def get_country_details(country_name):
     try:
+        # TODO: account for case sensitivity
         country = Country.query.filter_by(name=country_name).first()
         if country:
             country_details = {column.name: getattr(country, column.name)

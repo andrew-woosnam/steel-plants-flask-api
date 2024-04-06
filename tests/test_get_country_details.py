@@ -48,6 +48,33 @@ class TestGetCountryDetails(unittest.TestCase):
         self.assertEqual(result, expected)
 
     @patch('src.models.country.Country.query')
+    def test_country_found_case_insensitive(self, mock_query):
+        country = MagicMock(spec=Country)
+        country.name = 'Brazil'
+        country.total_plants = 10
+        country.electric = 5
+
+        type(country).__table__ = MagicMock()
+        type(country).__table__.columns = []
+        for column_name in ['name', 'total_plants', 'electric']:
+            column = MagicMock()
+            column.name = column_name
+            type(country).__table__.columns.append(column)
+
+        mock_query.filter_by.return_value.first.side_effect = \
+            lambda **kwargs: country if kwargs.get(
+                'name', '').lower() == country.name.lower() else None
+
+        expected = {'name': 'Brazil', 'total_plants': 10, 'electric': 5}
+        result_lower = get_country_details('brazil')
+        result_upper = get_country_details('BRAZIL')
+        result_mixed = get_country_details('BrAzIl')
+
+        self.assertEqual(result_lower, expected)
+        self.assertEqual(result_upper, expected)
+        self.assertEqual(result_mixed, expected)
+
+    @patch('src.models.country.Country.query')
     def test_country_not_found(self, mock_query):
         mock_query.filter_by.return_value.first.return_value = None
 
