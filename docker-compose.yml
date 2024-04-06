@@ -2,13 +2,15 @@ version: "3.8"
 
 services:
   db:
-    image: andrewtwoosnam/psql-iron-steel-plants
+    container_name: postgres-db
+    image: andrewtwoosnam/psql-iron-steel-plants:latest
     ports:
       - "5432:5432"
     env_file:
       - .env
 
   flask-api:
+    container_name: flask-api
     build: .
     depends_on:
       - db
