@@ -47,6 +47,15 @@ class TestGetCountryDetails(unittest.TestCase):
 
         self.assertEqual(result, expected)
 
+    @patch('src.models.country.Country.query')
+    def test_country_not_found(self, mock_query):
+        mock_query.filter_by.return_value.first.return_value = None
+
+        expected = {'error': 'Country not found'}, 404
+        result = get_country_details('NonExistentCountry')
+
+        self.assertEqual(result, expected)
+
 
 if __name__ == '__main__':
     unittest.main()
