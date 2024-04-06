@@ -20,14 +20,3 @@ services:
       - .:/code
     ports:
       - "5000:5000"
-
-  test:
-    container_name: tests
-    build:
-      dockerfile: Dockerfile.test
-    depends_on:
-      - flask-api
-    env_file:
-      - .env
-    command: pytest tests/
-    profiles: [test]
