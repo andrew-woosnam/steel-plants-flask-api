@@ -1,5 +1,6 @@
 import os
 from api.get_country_details import get_country_details
+from api.list_plant_types import list_plant_types
 import helpers
 from flask import Flask
 from api.list_countries import list_countries
@@ -17,6 +18,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.add_url_rule('/api/countries', view_func=list_countries, methods=['GET'])
 app.add_url_rule('/api/countries/<country_name>',
                  view_func=get_country_details, methods=['GET'])
+app.add_url_rule('/api/plants', view_func=list_plant_types, methods=['GET'])
 
 db.init_app(app)
 
