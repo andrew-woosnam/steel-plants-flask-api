@@ -56,6 +56,15 @@ class TestGetCountryDetails(unittest.TestCase):
 
         self.assertEqual(result, expected)
 
+    @patch('src.models.country.Country.query')
+    def test_country_server_error(self, mock_query):
+        mock_query.filter_by.side_effect = Exception('Unexpected error')
+
+        expected = {'error': 'Unexpected error'}, 500
+        result = get_country_details('TestCountry')
+
+        self.assertEqual(result, expected)
+
 
 if __name__ == '__main__':
     unittest.main()
