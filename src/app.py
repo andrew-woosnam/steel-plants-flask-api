@@ -1,7 +1,6 @@
 import os
 import helpers
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from api.list_countries import list_countries
 from database import db
 app = Flask(__name__)
