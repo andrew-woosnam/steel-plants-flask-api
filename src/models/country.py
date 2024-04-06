@@ -1,8 +1,9 @@
 from src.database import db
+from src.config import Config
 
 
 class Country(db.Model):
-    __tablename__ = 'iron_steel_production'
+    __tablename__ = Config.POSTGRES_TABLE
     name = db.Column('country', db.String(255), unique=True,
                      nullable=False, primary_key=True)
     total_plants = db.Column(db.Integer)

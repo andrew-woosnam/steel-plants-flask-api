@@ -8,5 +8,6 @@ class Config:
     POSTGRES_DB = os.getenv('POSTGRES_DB')
     POSTGRES_HOST = os.getenv('POSTGRES_HOST')
     POSTGRES_PORT = os.getenv('POSTGRES_PORT')
+    POSTGRES_TABLE = os.getenv('POSTGRES_TABLE')
     SQLALCHEMY_DATABASE_URI = get_db_connection_str()
     SQLALCHEMY_TRACK_MODIFICATIONS = False
